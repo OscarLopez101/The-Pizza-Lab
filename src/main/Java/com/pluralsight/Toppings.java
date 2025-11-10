@@ -1,6 +1,4 @@
 package com.pluralsight;
 
-public class PizzaMenu {
-
-
+public class Toppings {
 }
