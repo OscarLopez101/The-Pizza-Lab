@@ -12,4 +12,14 @@ public enum PizzaSize {
         this.diameterInInches = diameterInInches;
         this.basePrice = basePrice;
     }
+
+    public int getDiameterInInches() {
+        return diameterInInches;
+    }
+
+    public double getBasePrice() {
+        return basePrice;
+    }
 }
+
+
