@@ -69,6 +69,38 @@ public class Menu {
         }
     }
 
+    private void addPizza(Order order) {
+        System.out.println("\n==== ADD PIZZA ====");
+        PizzaSize size = selectPizzaSize();
+        CrustType crust = selectCrustType();
+
+        System.out.print("Stuffed crust? (y/n): ");
+        boolean stuffed = scanner.nextLine().equalsIgnoreCase("y");
+
+        Pizza pizza = new Pizza(size, crust, stuffed);
+
+        addToppings(pizza);
+        order.addPizza(pizza);
+        System.out.println("Pizza added successfully!");
+    }
+
+    private PizzaSize selectPizzaSize() {
+        System.out.println("Select size:");
+        System.out.println("1) Personal 8\"");
+        System.out.println("2) Medium 12\"");
+        System.out.println("3) Large 16\"");
+        System.out.print("Choice: ");
+        String input = scanner.nextLine();
+        switch (input) {
+            case "1": return PizzaSize.PERSONAL_8;
+            case "2": return PizzaSize.MEDIUM_12;
+            case "3": return PizzaSize.LARGE_16;
+            default:
+                System.out.println("Invalid, defaulting to Medium.");
+                return PizzaSize.MEDIUM_12;
+        }
+    }
+
 
 
 
