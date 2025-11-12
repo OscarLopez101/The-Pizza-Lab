@@ -168,6 +168,24 @@ public class Menu {
         System.out.print("Choice: ");
         String input = scanner.nextLine();
 
+        DrinkSize size;
+        switch (input) {
+            case "1": size = DrinkSize.SMALL; break;
+            case "2": size = DrinkSize.MEDIUM; break;
+            case "3": size = DrinkSize.LARGE; break;
+            default: size = DrinkSize.MEDIUM;
+        }
 
+        System.out.print("Enter drink flavor: ");
+        String flavor = scanner.nextLine();
 
+        order.addDrink(new Drink(size, flavor));
+        System.out.println("Drink added!");
+    }
 
+    private void addGarlicKnots(Order order) {
+        System.out.print("How many orders of garlic knots? ");
+        int qty = Integer.parseInt(scanner.nextLine());
+        order.addGarlicKnots(new GarlicKnots(qty));
+        System.out.println("Garlic knots added!");
+    }
