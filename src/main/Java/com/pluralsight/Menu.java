@@ -189,3 +189,18 @@ public class Menu {
         order.addGarlicKnots(new GarlicKnots(qty));
         System.out.println("Garlic knots added!");
     }
+
+    private void checkout(Order order) {
+        System.out.println("\n==== CHECKOUT ====");
+        System.out.println(order);
+        System.out.print("Confirm order? (y/n): ");
+        String confirm = scanner.nextLine();
+
+        if (confirm.equalsIgnoreCase("y")) {
+            ReceiptManager.saveReceipt(order);
+            System.out.println("Receipt saved! Returning to home screen...");
+        } else {
+            System.out.println("Order cancelled. Returning to home screen...");
+        }
+    }
+}
