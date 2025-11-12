@@ -101,6 +101,52 @@ public class Menu {
         }
     }
 
+    private CrustType selectCrustType() {
+        System.out.println("Select crust:");
+        System.out.println("1) Thin");
+        System.out.println("2) Regular");
+        System.out.println("3) Thick");
+        System.out.println("4) Cauliflower");
+        System.out.print("Choice: ");
+        String input = scanner.nextLine();
+        switch (input) {
+            case "1": return CrustType.THIN;
+            case "2": return CrustType.REGULAR;
+            case "3": return CrustType.THICK;
+            case "4": return CrustType.CAULIFLOWER;
+            default:
+                System.out.println("Invalid, defaulting to regular.");
+                return CrustType.REGULAR;
+        }
+    }
+
+    private void addToppings(Pizza pizza) {
+        System.out.println("Add toppings? (y/n)");
+        String answer = scanner.nextLine();
+        if (!answer.equalsIgnoreCase("y")) return;
+
+        boolean adding = true;
+        while (adding) {
+            System.out.println("\nSelect topping type:");
+            System.out.println("1) Meat");
+            System.out.println("2) Cheese");
+            System.out.println("3) Regular Topping");
+            System.out.println("4) Sauce");
+            System.out.println("0) Done adding toppings");
+            System.out.print("Choice: ");
+            String typeChoice = scanner.nextLine();
+
+            switch (typeChoice) {
+                case "1": addSpecificTopping(pizza, ToppingType.MEAT); break;
+                case "2": addSpecificTopping(pizza, ToppingType.CHEESE); break;
+                case "3": addSpecificTopping(pizza, ToppingType.REGULAR); break;
+                case "4": addSpecificTopping(pizza, ToppingType.SAUCE); break;
+                case "0": adding = false; break;
+                default: System.out.println("Invalid choice.");
+            }
+        }
+    }
+
 
 
 
