@@ -147,6 +147,27 @@ public class Menu {
         }
     }
 
+    private void addSpecificTopping(Pizza pizza, ToppingType type) {
+        System.out.print("Enter topping name: ");
+        String name = scanner.nextLine();
+        boolean extra = false;
+        if (type == ToppingType.MEAT || type == ToppingType.CHEESE) {
+            System.out.print("Extra portion? (y/n): ");
+            extra = scanner.nextLine().equalsIgnoreCase("y");
+        }
+        pizza.addTopping(new Topping(name, type, extra));
+        System.out.println(name + " added!");
+    }
+
+    private void addDrink(Order order) {
+        System.out.println("\n==== ADD DRINK ====");
+        System.out.println("Select size:");
+        System.out.println("1) Small");
+        System.out.println("2) Medium");
+        System.out.println("3) Large");
+        System.out.print("Choice: ");
+        String input = scanner.nextLine();
+
 
 
 
