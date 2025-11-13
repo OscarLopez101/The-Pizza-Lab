@@ -37,12 +37,23 @@ public class Menu {
 
         while (ordering) {
             System.out.println("\n==== ORDER SCREEN ====");
-            System.out.println("1) Add Pizza");
+            System.out.println("Items in order: "
+                    + order.getPizzas().size() + " pizzas, "
+                    + order.getDrinks().size() + " drinks, "
+                    + order.getGarlicKnotsItems().size() + " garlic knots.");
+
+            // 🔸 FRIENDLY REMINDER MESSAGE
+            if (order.getPizzas().isEmpty()) {
+                System.out.println("⚠️  Reminder: If you do not order any pizzas, you MUST add a drink or garlic knots before checkout.");
+            }
+
+            System.out.println("\n1) Add Pizza");
             System.out.println("2) Add Drink");
             System.out.println("3) Add Garlic Knots");
             System.out.println("4) Checkout");
             System.out.println("0) Cancel Order");
             System.out.print("Select option: ");
+
             String choice = scanner.nextLine();
 
             switch (choice) {
@@ -192,13 +203,31 @@ public class Menu {
 
     private void checkout(Order order) {
         System.out.println("\n==== CHECKOUT ====");
+
+        boolean hasPizza = !order.getPizzas().isEmpty();
+        boolean hasDrink = !order.getDrinks().isEmpty();
+        boolean hasKnots = !order.getGarlicKnotsItems().isEmpty();
+
+        // 🔸 Rule: cannot have a completely empty order
+        if (!hasPizza && !hasDrink && !hasKnots) {
+            System.out.println("⚠️  You cannot checkout with an empty order! Please add at least one item.");
+            return;
+        }
+
+        // 🔸 Rule: if no pizza, must have drink or garlic knots
+        if (!hasPizza && !hasDrink && hasKnots == false) {
+            System.out.println("⚠️  You must order a drink or garlic knots if you have no pizzas.");
+            return;
+        }
+
+        // Otherwise, valid order
         System.out.println(order);
         System.out.print("Confirm order? (y/n): ");
         String confirm = scanner.nextLine();
 
         if (confirm.equalsIgnoreCase("y")) {
             ReceiptManager.saveReceipt(order);
-            System.out.println("Receipt saved! Returning to home screen...");
+            System.out.println("✅ Receipt saved! Returning to home screen...");
         } else {
             System.out.println("Order cancelled. Returning to home screen...");
         }
