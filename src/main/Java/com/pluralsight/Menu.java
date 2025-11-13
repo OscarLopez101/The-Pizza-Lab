@@ -45,10 +45,19 @@ public class Menu {
             System.out.print("> ");
 
             switch (scanner.nextLine()) {
-                case "1": addPizza(order); break;
-                case "2": addDrink(order); break;
-                case "3": addGarlicKnots(order); break;
-                case "4": checkout(order); ordering = false; break;
+                case "1":
+                    addPizza(order);
+                    break;
+                case "2":
+                    addDrink(order);
+                    break;
+                case "3":
+                    addGarlicKnots(order);
+                    break;
+                case "4":
+                    checkout(order);
+                    ordering = false;
+                    break;
                 case "0":
                     System.out.println(Colors.RED + "Order cancelled." + Colors.RESET);
                     ordering = false;
@@ -85,9 +94,12 @@ public class Menu {
         System.out.print("> ");
 
         switch (scanner.nextLine()) {
-            case "1": return PizzaSize.PERSONAL_8;
-            case "2": return PizzaSize.MEDIUM_12;
-            case "3": return PizzaSize.LARGE_16;
+            case "1":
+                return PizzaSize.PERSONAL_8;
+            case "2":
+                return PizzaSize.MEDIUM_12;
+            case "3":
+                return PizzaSize.LARGE_16;
             default:
                 System.out.println(Colors.RED + "Invalid – defaulting to Medium" + Colors.RESET);
                 return PizzaSize.MEDIUM_12;
@@ -103,10 +115,14 @@ public class Menu {
         System.out.print("> ");
 
         switch (scanner.nextLine()) {
-            case "1": return CrustType.THIN;
-            case "2": return CrustType.REGULAR;
-            case "3": return CrustType.THICK;
-            case "4": return CrustType.CAULIFLOWER;
+            case "1":
+                return CrustType.THIN;
+            case "2":
+                return CrustType.REGULAR;
+            case "3":
+                return CrustType.THICK;
+            case "4":
+                return CrustType.CAULIFLOWER;
             default:
                 System.out.println(Colors.RED + "Invalid – defaulting to Regular" + Colors.RESET);
                 return CrustType.REGULAR;
@@ -120,7 +136,7 @@ public class Menu {
         // SAUCE
         handleCommaInput(
                 "Sauce",
-                "(Marinara, Alfredo, Pesto, BBQ, Buffalo, Olive Oil)",
+                "(marinara, alfredo, pesto, bbq, buffalo, olive oil)",
                 ToppingType.SAUCE,
                 false,
                 pizza
@@ -129,7 +145,7 @@ public class Menu {
         // CHEESE
         handleCommaInput(
                 "Cheese",
-                "(Cheddar, Swiss, American, Provolone)",
+                "(Mozzarella, Parmesan, Ricotta, Goat Cheese)",
                 ToppingType.CHEESE,
                 true,
                 pizza
@@ -138,7 +154,7 @@ public class Menu {
         // REGULAR TOPPINGS
         handleCommaInput(
                 "Toppings",
-                "(Lettuce, Pepper, Tomato, Onion, Jalapenos, Pickles, Cucumbers, Guac, Mushrooms)",
+                "(onions, mushrooms, bell peppers, olives, tomatoes, spinach, basil, pineapple, anchovies)",
                 ToppingType.REGULAR,
                 false,
                 pizza
@@ -147,7 +163,7 @@ public class Menu {
         // MEATS
         handleCommaInput(
                 "Meats",
-                "(Steak, Ham, Salami, Roast Beef, Chicken, Bacon)",
+                "(Pepperoni, Sausage, Ham, Bacon, Chicken, Meatball)",
                 ToppingType.MEAT,
                 true,
                 pizza
@@ -201,9 +217,15 @@ public class Menu {
 
         DrinkSize size;
         switch (scanner.nextLine()) {
-            case "1": size = DrinkSize.SMALL; break;
-            case "2": size = DrinkSize.MEDIUM; break;
-            case "3": size = DrinkSize.LARGE; break;
+            case "1":
+                size = DrinkSize.SMALL;
+                break;
+            case "2":
+                size = DrinkSize.MEDIUM;
+                break;
+            case "3":
+                size = DrinkSize.LARGE;
+                break;
             default:
                 size = DrinkSize.MEDIUM;
         }
@@ -227,13 +249,38 @@ public class Menu {
     private void checkout(Order order) {
 
         System.out.println("\n" + Colors.YELLOW + "==== CHECKOUT ====" + Colors.RESET);
+
+        // -------------------------------------------
+        // BUSINESS RULE: Must have at least 1 pizza OR 1 side (drink or garlic knots)
+        // -------------------------------------------
+        boolean hasNoPizzas = order.getPizzas().isEmpty();
+        boolean hasNoDrinks = order.getDrinks().isEmpty();
+        boolean hasNoKnots = order.getGarlicKnotsItems().isEmpty();
+
+        if (hasNoPizzas && hasNoDrinks && hasNoKnots) {
+            System.out.println(Colors.RED +
+                    "\nYou cannot checkout with an empty order!" +
+                    "\nYou must add at least a drink or garlic knots if you order 0 pizzas." +
+                    Colors.RESET);
+            return; // Return to order menu
+        }
+
+        if (hasNoPizzas && (hasNoDrinks || hasNoKnots)) {
+            // They ordered 0 pizzas but only 1 side is required
+            System.out.println(Colors.YELLOW +
+                    "\nReminder: You ordered 0 pizzas, but at least 1 drink or garlic knots is required." +
+                    Colors.RESET);
+        }
+        // -------------------------------------------
+
         System.out.println(order);
 
         System.out.print("Confirm order? (y/n): ");
         if (scanner.nextLine().equalsIgnoreCase("y")) {
 
             ReceiptManager.saveReceipt(order);
-            System.out.println(Colors.GREEN + "Receipt saved! Returning to Home Screen..." + Colors.RESET);
+            System.out.println(Colors.GREEN +
+                    "Receipt saved! Returning to Home Screen..." + Colors.RESET);
 
         } else {
             System.out.println(Colors.RED + "Order cancelled!" + Colors.RESET);
