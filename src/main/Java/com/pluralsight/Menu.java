@@ -103,9 +103,12 @@ public class Menu {
         System.out.print("Choice: ");
         String input = scanner.nextLine();
         switch (input) {
-            case "1": return PizzaSize.PERSONAL_8;
-            case "2": return PizzaSize.MEDIUM_12;
-            case "3": return PizzaSize.LARGE_16;
+            case "1":
+                return PizzaSize.PERSONAL_8;
+            case "2":
+                return PizzaSize.MEDIUM_12;
+            case "3":
+                return PizzaSize.LARGE_16;
             default:
                 System.out.println("Invalid, defaulting to Medium.");
                 return PizzaSize.MEDIUM_12;
@@ -121,10 +124,14 @@ public class Menu {
         System.out.print("Choice: ");
         String input = scanner.nextLine();
         switch (input) {
-            case "1": return CrustType.THIN;
-            case "2": return CrustType.REGULAR;
-            case "3": return CrustType.THICK;
-            case "4": return CrustType.CAULIFLOWER;
+            case "1":
+                return CrustType.THIN;
+            case "2":
+                return CrustType.REGULAR;
+            case "3":
+                return CrustType.THICK;
+            case "4":
+                return CrustType.CAULIFLOWER;
             default:
                 System.out.println("Invalid, defaulting to regular.");
                 return CrustType.REGULAR;
@@ -148,12 +155,23 @@ public class Menu {
             String typeChoice = scanner.nextLine();
 
             switch (typeChoice) {
-                case "1": addSpecificTopping(pizza, ToppingType.MEAT); break;
-                case "2": addSpecificTopping(pizza, ToppingType.CHEESE); break;
-                case "3": addSpecificTopping(pizza, ToppingType.REGULAR); break;
-                case "4": addSpecificTopping(pizza, ToppingType.SAUCE); break;
-                case "0": adding = false; break;
-                default: System.out.println("Invalid choice.");
+                case "1":
+                    addSpecificTopping(pizza, ToppingType.MEAT);
+                    break;
+                case "2":
+                    addSpecificTopping(pizza, ToppingType.CHEESE);
+                    break;
+                case "3":
+                    addSpecificTopping(pizza, ToppingType.REGULAR);
+                    break;
+                case "4":
+                    addSpecificTopping(pizza, ToppingType.SAUCE);
+                    break;
+                case "0":
+                    adding = false;
+                    break;
+                default:
+                    System.out.println("Invalid choice.");
             }
         }
     }
@@ -181,10 +199,17 @@ public class Menu {
 
         DrinkSize size;
         switch (input) {
-            case "1": size = DrinkSize.SMALL; break;
-            case "2": size = DrinkSize.MEDIUM; break;
-            case "3": size = DrinkSize.LARGE; break;
-            default: size = DrinkSize.MEDIUM;
+            case "1":
+                size = DrinkSize.SMALL;
+                break;
+            case "2":
+                size = DrinkSize.MEDIUM;
+                break;
+            case "3":
+                size = DrinkSize.LARGE;
+                break;
+            default:
+                size = DrinkSize.MEDIUM;
         }
 
         System.out.print("Enter drink flavor: ");
@@ -202,34 +227,45 @@ public class Menu {
     }
 
     private void checkout(Order order) {
-        System.out.println("\n==== CHECKOUT ====");
+        System.out.println("\n" + Colors.YELLOW + "==== CHECKOUT ====" + Colors.RESET);
 
-        boolean hasPizza = !order.getPizzas().isEmpty();
-        boolean hasDrink = !order.getDrinks().isEmpty();
-        boolean hasKnots = !order.getGarlicKnotsItems().isEmpty();
-
-        // 🔸 Rule: cannot have a completely empty order
-        if (!hasPizza && !hasDrink && !hasKnots) {
-            System.out.println("⚠️  You cannot checkout with an empty order! Please add at least one item.");
-            return;
+        // PIZZAS
+        if (!order.getPizzas().isEmpty()) {
+            System.out.println(Colors.BLUE + "\n--- Pizzas ---" + Colors.RESET);
+            for (Pizza pizza : order.getPizzas()) {
+                System.out.println(Colors.BLUE + pizza + Colors.RESET + "\n");
+            }
         }
 
-        // 🔸 Rule: if no pizza, must have drink or garlic knots
-        if (!hasPizza && !hasDrink && hasKnots == false) {
-            System.out.println("⚠️  You must order a drink or garlic knots if you have no pizzas.");
-            return;
+        // DRINKS
+        if (!order.getDrinks().isEmpty()) {
+            System.out.println(Colors.GREEN + "\n--- Drinks ---" + Colors.RESET);
+            for (Drink drink : order.getDrinks()) {
+                System.out.println(Colors.GREEN + "  " + drink + Colors.RESET);
+            }
         }
 
-        // Otherwise, valid order
-        System.out.println(order);
-        System.out.print("Confirm order? (y/n): ");
+        // GARLIC KNOTS
+        if (!order.getGarlicKnotsItems().isEmpty()) {
+            System.out.println(Colors.PURPLE + "\n--- Garlic Knots ---" + Colors.RESET);
+            for (GarlicKnots item : order.getGarlicKnotsItems()) {
+                System.out.println(Colors.PURPLE + "  " + item + Colors.RESET);
+            }
+        }
+
+        // TOTAL
+        System.out.println(Colors.BRIGHT_GREEN +
+                "\nTOTAL: $" + String.format("%.2f", order.getTotal()) +
+                Colors.RESET);
+
+        System.out.print("\nConfirm order? (y/n): ");
         String confirm = scanner.nextLine();
 
         if (confirm.equalsIgnoreCase("y")) {
             ReceiptManager.saveReceipt(order);
-            System.out.println("✅ Receipt saved! Returning to home screen...");
+            System.out.println(Colors.GREEN + "Receipt saved! Returning to home screen..." + Colors.RESET);
         } else {
-            System.out.println("Order cancelled. Returning to home screen...");
+            System.out.println(Colors.RED + "Order cancelled. Returning to home screen..." + Colors.RESET);
         }
     }
 }
